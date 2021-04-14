@@ -1,0 +1,40 @@
+version: '2'
+services:
+  kali_attacker:
+    image: 'dockersecplayground/kali:v1.2'
+    stdin_open: true
+    tty: true
+    networks:
+      public_network:
+        ipv4_address: 193.20.1.3
+    cap_add:
+      - ALL
+    privileged: true
+  host:
+    image: 'dockersecplayground/simplefirewall:latest'
+    stdin_open: true
+    tty: true
+    networks:
+      local_network:
+        ipv4_address: 193.20.2.3
+      public_network:
+        ipv4_address: 193.20.1.2
+  database:
+    image: 'wodby/mariadb:10.4-3.8.5'
+    stdin_open: true
+    tty: true
+    networks:
+      local_network:
+        ipv4_address: 193.20.2.2
+    environment:
+      - MYSQL_ROOT_PASSWORD=averysecretpassword
+      - MYSQL_DATABASE=secretdb
+networks:
+  public_network:
+    ipam:
+      config:
+        - subnet: 193.20.1.1/24
+  local_network:
+    ipam:
+      config:
+        - subnet: 193.20.2.1/24
