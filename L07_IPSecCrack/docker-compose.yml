@@ -1,0 +1,75 @@
+version: '2'
+services:
+  serverB:
+    image: 'mskunilab/ipsec_server_aggr:latest'
+    stdin_open: true
+    tty: true
+    networks:
+      def_network:
+        ipv4_address: 172.18.0.6
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+
+  clientB:
+    image: 'mskunilab/ipsec_client_aggr:latest'
+    stdin_open: true
+    tty: true
+    networks:
+      def_network:
+        ipv4_address: 172.18.0.7
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+
+  serverA:
+    image: 'mskunilab/ipsec_server_main:latest'
+    stdin_open: true
+    tty: true
+    networks:
+      def_network:
+        ipv4_address: 172.18.0.2
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+
+  clientA:
+    image: 'mskunilab/ipsec_client_main:latest'
+    stdin_open: true
+    tty: true
+    networks:
+      def_network:
+        ipv4_address: 172.18.0.3
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+
+  attacker:
+    image: 'dockersecplayground/ike-scan:latest'
+    stdin_open: true
+    tty: true
+    networks:
+      def_network:
+        ipv4_address: 172.18.0.5
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+
+  wireshark:
+    image: 'ffeldhaus/wireshark:latest'
+    stdin_open: true
+    tty: true
+    ports:
+      - '14500:14500'
+    network_mode: host
+    environment:
+      - XPRA_PW=wireshark
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+
+networks:
+  def_network:
+    ipam:
+      config:
+        - subnet: 172.18.0.1/24
