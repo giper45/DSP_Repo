@@ -22,5 +22,10 @@ iptables \
     --proto icmp \
     --jump ACCEPT 
 
+iptables \
+    --append INPUT \
+    --proto tcp \
+    -i eth0 \
+    --jump DROP
 
 exec "$@"

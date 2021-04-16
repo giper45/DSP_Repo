@@ -14,21 +14,19 @@ services:
     image: 'dockersecplayground/simplefirewall:latest'
     stdin_open: true
     tty: true
+    privileged: true
     networks:
       local_network:
         ipv4_address: 193.20.2.3
       public_network:
         ipv4_address: 193.20.1.2
   database:
-    image: 'wodby/mariadb:10.4-3.8.5'
+    image: 'dockersecplayground/mysql_dsp:latest'
     stdin_open: true
     tty: true
     networks:
       local_network:
         ipv4_address: 193.20.2.2
-    environment:
-      - MYSQL_ROOT_PASSWORD=averysecretpassword
-      - MYSQL_DATABASE=secretdb
 networks:
   public_network:
     ipam:
