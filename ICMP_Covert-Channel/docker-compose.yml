@@ -14,7 +14,6 @@ services:
     image: 'dockersecplayground/simplefirewall:latest'
     stdin_open: true
     tty: true
-    privileged: true
     networks:
       local_network:
         ipv4_address: 193.20.2.3
